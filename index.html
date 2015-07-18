@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<title>图片轮播</title>
+		<link rel="stylesheet" type="text/css" href="css.css"/>
+		<script type="text/javascript" src="jquery-1.2.6.pack.js"></script>
+		<script type="text/javascript">
+			var t = n = 0, count;
+			$(document).ready(function(){
+				//获取图片的数量
+				count=$("#banner_list a").length;
+				//隐藏除了第一张图片的其他图片
+				$("#banner_list a:not(:first-child)").hide();
+				//通过图片的alt插入标题
+				$("#banner_info").html($("#banner_list a:first-child").find("img").attr('alt'));
+				//打开图片a标签所带的链接
+				$("#banner_info").click(function(){window.open($("#banner_list a:first-child").attr('href'), "_blank")});
+				//给li标签添加click事件
+				$("#banner li").click(function() {
+					//当前li中的数字-1
+					var i = $(this).text() - 1;//获取Li元素内的值，即1，2，3，4
+					//赋值i给n
+					n = i;
+					//if语句为假，则不执行return语句。
+					if (i >= count) return;	
+					$("#banner_info").html($("#banner_list a").eq(i).find("img").attr('alt'));
+					$("#banner_info").unbind().click(function(){window.open($("#banner_list a").eq(i).attr('href'), "_blank")})
+					$("#banner_list a").filter(":visible").fadeOut(500).parent().children().eq(i).fadeIn(1000);
+					document.getElementById("banner").style.background="";
+					$(this).addClass("on");
+					//$(this).toggleClass("on");
+					$(this).siblings().removeAttr("class");
+				});
+				t = setInterval("showAuto()", 4000);
+				$("#banner").hover(function(){clearInterval(t)}, function(){t = setInterval("showAuto()", 4000);});
+			})
+			
+			function showAuto()
+			{
+				n = n >=(count - 1) ? 0 : ++n;
+				$("#banner li").eq(n).trigger('click');
+			}
+		</script>
+
+	</head>
+
+	<body>
+		<div id="banner">
+			<div id="banner_bg"></div>
+			<!--标题背景-->
+			<div id="banner_info"></div>
+			<!--标题-->
+			<ul>
+				<li class="on">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+			</ul>
+			<div id="banner_list">
+				<a href="#" target="_blank">
+					<img src="imgs/p1.jpg" title="夜色空凝www.yeskn.com" alt="夜色空凝www.yeskn.com" />
+				</a>
+				<a href="#" target="_blank">
+					<img src="imgs/p5.jpg" title="夜色空凝www.yeskn.com" alt="夜色空凝www.yeskn.com" />
+				</a>
+				<a href="#" target="_blank">
+					<img src="imgs/p3.jpg" title="夜色空凝www.yeskn.com" alt="夜色空凝www.yeskn.com" />
+				</a>
+				<a href="#" target="_blank">
+					<img src="imgs/p4.jpg" title="夜色空凝www.yeskn.com" alt="夜色空凝www.yeskn.com" />
+				</a>
+			</div>
+		</div>
+	</body>
+
+</html>
